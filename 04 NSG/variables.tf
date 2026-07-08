@@ -25,6 +25,12 @@ variable "subnet_id" {
   default     = null
 }
 
+variable "network_interface_id" {
+  description = "Optional: resource ID of a network interface to associate this NSG with. Leave as null to skip association."
+  type        = string
+  default     = null
+}
+
 variable "security_rules" {
   description = "List of inbound/outbound security rules for the NSG."
   type = list(object({

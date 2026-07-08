@@ -2,6 +2,7 @@ resource_group_name = "agentic_ai-dev"
 location            = "East US"
 nsg_name            = "nsg_1"
 subnet_id           = "/subscriptions/9f7df4c2-61e5-47f6-a9d9-dc9f0bd559ab/resourceGroups/agentic_ai-dev/providers/Microsoft.Network/virtualNetworks/agentic_ai-vnet/subnets/agentic_ai-subnet"
+#network_interface_id = "value"
 
 tags = {
   environment = "Production"

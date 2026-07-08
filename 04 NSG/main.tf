@@ -29,3 +29,10 @@ resource "azurerm_subnet_network_security_group_association" "this" {
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
+resource "azurerm_network_interface_security_group_association" "this" {
+  count = var.network_interface_id != null ? 1 : 0
+
+  network_interface_id      = var.network_interface_id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
