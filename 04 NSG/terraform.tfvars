@@ -1,15 +1,29 @@
 resource_group_name = "agentic_ai-dev"
 location            = "East US"
-nsg_name            = "nsg_1"
-subnet_id           = "/subscriptions/9f7df4c2-61e5-47f6-a9d9-dc9f0bd559ab/resourceGroups/agentic_ai-dev/providers/Microsoft.Network/virtualNetworks/agentic_ai-vnet/subnets/agentic_ai-subnet"
-#network_interface_id = "value"
+
+create_subnet_nsg = true
+subnet_nsg_name = "nsg-subnet"
+subnet_names = {
+  agentic_ai-subnet    = "agentic_ai-subnet"
+}
+vnet_name            = "agentic_ai-vnet" 
+#subnet_ids = {
+#  app-subnet   = "/subscriptions/xxxx/resourceGroups/my-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/app-subnet"
+#  analytics-subnet = "/subscriptions/xxxx/resourceGroups/my-rg/providers/Microsoft.Network/virtualNetworks/my-vnet/subnets/analytics-subnet"
+#}
+
+
+create_nic_nsg    = false
+nic_nsg_name    = "nsg-nic1"
+#nic_ids = {app-nic = "/subscriptions/.../resourceGroups/my-rg/providers/Microsoft.Network/networkInterfaces/app-nic"}
+nic_names = {agentic-vm-nic = "agentic-vm-nic"}
 
 tags = {
   environment = "Production"
   managed_by  = "Ai-Agent"
 }
 
-security_rules = [
+subnet_nsg_security_rules = [
   {
     name                        = "Allow-HTTPS-Inbound"
     priority                    = 100
@@ -59,3 +73,31 @@ security_rules = [
     description                 = "Allow outbound HTTPS for updates/package installs"
   }
 ]
+
+nic_nsg_security_rules = [
+  {
+    name                        = "Allow-HTTPS-Inbound"
+    priority                    = 100
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+    source_port_range           = "*"
+    destination_port_range      = "443"
+    source_address_prefix       = "Internet"
+    destination_address_prefix  = "*"
+    description                 = "Allow inbound HTTPS from Internet"
+  },
+  {
+    name                        = "Allow-SSH-From-Bastion"
+    priority                    = 110
+    direction                   = "Inbound"
+    access                      = "Allow"
+    protocol                    = "Tcp"
+    source_port_range           = "*"
+    destination_port_range      = "22"
+    source_address_prefix       = "10.0.1.0/24"
+    destination_address_prefix  = "*"
+    description                 = "Allow SSH only from bastion subnet"
+  }
+]
+
