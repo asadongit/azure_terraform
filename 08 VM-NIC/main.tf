@@ -8,10 +8,8 @@ data "azurerm_subnet" "lookup" {
 }
 
 data "azurerm_public_ip" "lookup" {
-
-  count = var.public_ip_id == null ? 1 : 0
-
-  name                = var.public_ip_name
+  count               = local.resolved_public_ip_name != null && local.resolved_public_ip_name != "" ? 1 : 0
+  name                = local.resolved_public_ip_name
   resource_group_name = var.resource_group_name
 }
 
@@ -27,6 +25,12 @@ locals {
     var.public_ip_id != null
       ? var.public_ip_id
       : (var.public_ip_name != "" ? data.azurerm_public_ip.lookup[0].id : null)
+  )
+
+  resolved_public_ip_name = (
+    var.public_ip_id != null
+      ? regex("publicIPAddresses/([^/]+)$", var.public_ip_id)[0]
+      : var.public_ip_name
   )
 }
 
@@ -54,6 +58,6 @@ resource "azurerm_network_interface" "this" {
       : null
     )
 
-    public_ip_address_id = var.public_ip_id
+    public_ip_address_id = local.effective_public_ip_id
   }
 }

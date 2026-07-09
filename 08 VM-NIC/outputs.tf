@@ -18,3 +18,8 @@ output "private_ip" {
 
   value = azurerm_network_interface.this.private_ip_address
 }
+
+output "public_ip" {
+  description = "The public IP address attached to the VM"
+  value       = try(data.azurerm_public_ip.lookup[0].ip_address, null)
+}
