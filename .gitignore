@@ -1,3 +1,6 @@
+az-login.sh
+az-login.ps1
+
 # Terraform
 .terraform/
 *.tfstate

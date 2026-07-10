@@ -1,0 +1,28 @@
+# To list all the VMs
+az vm list -d -o json
+
+az vm list -d -o table
+
+# To start a VM
+az vm start \
+    --resource-group <RG_NAME> \
+    --name <VM_NAME>
+
+az vm start \
+    --ids <VM_RESOURCE_ID>
+
+# To stop a VM
+az vm stop \
+    --resource-group <RG_NAME> \
+    --name <VM_NAME>
+
+# To Deallocate a VM
+az vm deallocate \
+    --resource-group <RG_NAME> \
+    --name <VM_NAME>
+
+# To restart a VM
+az vm restart \
+    --resource-group <RG_NAME> \
+    --name <VM_NAME>
+
